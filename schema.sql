@@ -11,6 +11,9 @@ CREATE TABLE products (
 	PRIMARY KEY (item_id)
 );
 
+ALTER TABLE products
+ADD COLUMN product_sales DECIMAL(10,2);
+
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Dell Latitude E5570 Laptop Computer", "Electronics", 1500.00, 10),
 ("Bob Dylan 'Blonde on Blonde' Vinyl", "Music", 49.99, 5),
@@ -22,3 +25,11 @@ VALUES ("Dell Latitude E5570 Laptop Computer", "Electronics", 1500.00, 10),
 ("US Men's National Soccer Team Banner", "Sports", 64.99, 2),
 ("Videri Chocolate Bar - Classic Dark", "Grocery", 7.00, 9),
 ("'Ham on Rye' by Charles Bukowski", "Books", 9.99, 6);
+
+CREATE TABLE departments (
+	department_id INT AUTO_INCREMENT NOT NULL,
+	deparment_name VARCHAR(50) NOT NULL,
+	overhead_costs DECIMAL(10,2) NOT NULL,
+	total_sales DECIMAL(10,2) NOT NULL,
+	PRIMARY KEY (department_id)
+);

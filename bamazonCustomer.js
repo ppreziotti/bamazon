@@ -58,9 +58,9 @@ function displayItems() {
 			// then the use is given the total cost of their purchase in the stock quantity
 			// in the product table is updated
 			if (chosenItem.stock_quantity >= answers.quantity) {
-				connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: parseInt(chosenItem.stock_quantity) - parseInt(answers.quantity)}, {item_id: chosenItem.item_id}], function(err, res) {
+				var totalCost = chosenItem.price * answers.quantity;
+				connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: parseInt(chosenItem.stock_quantity) - parseInt(answers.quantity), product_sales: chosenItem.product_sales + totalCost}, {item_id: chosenItem.item_id}], function(err, res) {
 					if (err) throw err;
-					var totalCost = chosenItem.price * answers.quantity;
 					console.log("Thank you for your purchase! Your total cost is $" + totalCost + ".");
 					inquirer.prompt([
 						{
