@@ -33,3 +33,13 @@ CREATE TABLE departments (
 	total_sales DECIMAL(10,2) NOT NULL,
 	PRIMARY KEY (department_id)
 );
+
+ALTER TABLE departments
+CHANGE deparment_name department_name VARCHAR(50);
+
+INSERT INTO departments (department_name, overhead_costs, total_sales)
+VALUES ("Electronics", 4500.00, 0),
+("Music", 250.00, 0),
+("Sports", 200.00, 0),
+("Grocery", 75.00, 0),
+("Books", 75.000, 0);

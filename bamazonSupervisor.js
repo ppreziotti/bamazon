@@ -1,5 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var table = require("console.table");
 
 var connection = mysql.createConnection({
 	host: 'localhost',
@@ -29,7 +30,10 @@ function displayOptions() {
 }
 
 function viewSales() {
-	console.log("Sales data coming soon...");
+	connection.query("SELECT * FROM departments", function(err, res) {
+		if (err) throw err;
+		console.log(res);
+	});
 }
 
 function newDepartment() {
