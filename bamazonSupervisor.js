@@ -29,15 +29,39 @@ function displayOptions() {
 	});
 }
 
+// Shows sales by department  - All columns from the department tables are selected along 
+// with a custom alias to show total profit
 function viewSales() {
-	connection.query("SELECT * FROM departments", function(err, res) {
+	connection.query("SELECT department_id, department_name, overhead_costs, total_sales, total_sales-overhead_costs AS total_profit FROM departments", function(err, res) {
 		if (err) throw err;
-		console.log(res);
+		console.table(res);
 	});
-}
 
+// The supervisor is able to create a new department by inserting the department name 
+// and overhead costs into the departments table
 function newDepartment() {
-	console.log("You will be able to add a new department soon...");
+	inquirer.prompt([
+		{
+			name: "name",
+			message: "Please enter the department name:"
+		},
+		{
+			name: "costs",
+			message: "Please enter the overhead costs:",
+			validate: function(value) {
+				if (isNaN(value) === false) {
+					return true;
+				}
+				return false;
+			}
+		}
+	]).then(function(answers) {
+		connection.query("INSERT INTO departments SET ?",{department_name: answers.name, overhead_costs: answers.costs}, function(err, res) {
+			if (err) throw err;
+			console.log("Department added succesfully!");
+		});
+	})
+
 }
 
 // Execute displayOptions to start program

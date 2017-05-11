@@ -30,16 +30,16 @@ CREATE TABLE departments (
 	department_id INT AUTO_INCREMENT NOT NULL,
 	deparment_name VARCHAR(50) NOT NULL,
 	overhead_costs DECIMAL(10,2) NOT NULL,
-	total_sales DECIMAL(10,2) NOT NULL,
+	total_sales DECIMAL(10,2),
 	PRIMARY KEY (department_id)
 );
 
 ALTER TABLE departments
-CHANGE deparment_name department_name VARCHAR(50);
+ALTER total_sales SET DEFAULT 0.00;
 
-INSERT INTO departments (department_name, overhead_costs, total_sales)
-VALUES ("Electronics", 4500.00, 0),
-("Music", 250.00, 0),
-("Sports", 200.00, 0),
-("Grocery", 75.00, 0),
-("Books", 75.000, 0);
+INSERT INTO departments (department_name, overhead_costs)
+VALUES ("Electronics", 4500.00),
+("Music", 250.00),
+("Sports", 200.00),
+("Grocery", 75.00),
+("Books", 75.00);
