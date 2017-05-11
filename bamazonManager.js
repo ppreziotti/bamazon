@@ -20,7 +20,7 @@ function displayOptions() {
 		{
 			name: "options",
 			type: "list",
-			message: "Welcome! What would you like to do?",
+			message: "Welcome! What would you like to do today?",
 			choices: ["View Products for Sale", "View Low Inventory", "Add to Inventory",
 			"Add New Product"]
 		}
@@ -51,20 +51,7 @@ function viewProducts() {
 			res[i].product_name + "\nPrice: " + res[i].price + 
 			"\nQuantity in Stock: " + res[i].stock_quantity);
 		}
-		inquirer.prompt([
-			{
-				name: "confirm",
-				type: "confirm",
-				message: "Would like to make another selection?"
-			}
-		]).then(function(answer) {
-			if (answer.confirm === true) {
-				displayOptions();
-			}
-			else {
-				console.log("Thank you. Come back again soon.");
-			}
-		});
+		startOver();
 	});
 }
 
@@ -81,20 +68,7 @@ function lowInventory() {
 				"\nQuantity in Stock: " + res[i].stock_quantity);
 			}
 		}
-		inquirer.prompt([
-			{
-				name: "confirm",
-				type: "confirm",
-				message: "Would like to make another selection?"
-			}
-		]).then(function(answer) {
-			if (answer.confirm === true) {
-				displayOptions();
-			}
-			else {
-				console.log("Thank you. Come back again soon.");
-			}
-		});				
+		startOver();			
 	});
 }
 
@@ -139,21 +113,8 @@ function addInventory() {
 			}
 			connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: parseInt(chosenItem.stock_quantity) + parseInt(answers.quantity)}, {item_id: chosenItem.item_id}], function(err, res) {
 				if (err) throw err;
-				console.log("The product quantity has been succesfully updated.");
-				inquirer.prompt([
-					{
-						name: "confirm",
-						type: "confirm",
-						message: "Would like to make another selection?"
-					}
-				]).then(function(answer) {
-					if (answer.confirm === true) {
-						displayOptions();
-					}
-					else {
-						console.log("Thank you. Come back again soon.");
-					}
-				});
+				console.log("Inventory added succesfully.");
+				startOver();
 			});
 		});
 	});
@@ -184,21 +145,26 @@ function addProduct() {
 		stock_quantity: answers.quantity}, function(err, res) {
 			if (err) throw (err);
 			console.log("Product added succesfully!");
-			inquirer.prompt([
-				{
-					name: "confirm",
-					type: "confirm",
-					message: "Would like to make another selection?"
-				}
-			]).then(function(answer) {
-				if (answer.confirm === true) {
-					displayOptions();
-				}
-				else {
-					console.log("Thank you. Come back again soon.");
-				}
-			});
+			startOver();
 		});	
+	});
+}
+
+// Displays a prompt giving the option to go back to start
+function startOver() {
+	inquirer.prompt([
+		{
+			name: "confirm",
+			type: "confirm",
+			message: "Would you like to make another selection?"
+		}
+	]).then(function(answer) {
+		if (answer.confirm === true) {
+			displayOptions();
+		}
+		else {
+			console.log("Thank you. Come back again soon.");
+		}
 	});
 }
 

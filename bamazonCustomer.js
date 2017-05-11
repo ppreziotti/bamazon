@@ -25,7 +25,7 @@ function displayItems() {
 			"\nDepartment: " + res[i].department_name + "\nPrice: " + res[i].price);
 		}
 		// User inputs the item id of the product they would like to purchase along with
-		// the quantity of the product
+		// the quantity of the product, and then the transaction is completed
 		inquirer.prompt([
 			{
 				name: "id",
@@ -52,13 +52,11 @@ function displayItems() {
 			for (var i = 0; i < res.length; i++) {
 				if (res[i].item_id === parseInt(answers.id)) {
 					chosenItem = res[i];
-
 				}
 			}
-			// If there is enough of the product available to fulfill the user's purchase
-			// then the user is given the total cost of their purchase. The stock quantity
-			// and product sales for the product are updated in the products table and the
-			// total sales for the appropriate department is updated in the departments table
+			// The user is given the total cost of his/her purchase. The stock quantity and product sales 
+			// for the product are updated in the products table and the total sales for the appropriate 
+			// department is updated in the departments table
 			if (chosenItem.stock_quantity >= answers.quantity) {
 				var chosenDepartment;
 				var departmentSales;
@@ -67,49 +65,40 @@ function displayItems() {
 					if (err) throw err;
 					connection.query("SELECT department_name, total_sales FROM departments WHERE ?", {department_name: chosenItem.department_name}, function(err, res) {
 						if (err) throw err;
-						console.log(res[0].department_name);
-						console.log(res[0].total_sales);
 						chosenDepartment = res[0].department_name;
 						departmentSales = res[0].total_sales;
 						connection.query("UPDATE departments SET ? WHERE ?", [{total_sales: departmentSales + totalCost}, {department_name: chosenDepartment}], function(err, res) {
 							if (err) throw err;
 							console.log("Thank you for your purchase! Your total cost is $" + totalCost + ".");
-							inquirer.prompt([
-								{
-									name: "confirm",
-									type: "confirm",
-									message: "Would you like to order something else?"
-								}
-							]).then(function(answer) {
-								if (answer.confirm === true) {
-									displayItems();
-								}
-								else {
-									console.log("Thank you for shopping with us. Come back again soon!");
-								}
-							});
+							startOver();
 						});
 					});
 				});
 			}
 			else {
 				console.log("We are very sorry. There is insufficient stock for your order.");
-				inquirer.prompt([
-					{
-						name: "confirm",
-						type: "confirm",
-						message: "Would you like to order something else?"
-					}
-				]).then(function(answer) {
-					if (answer.confirm === true) {
-						displayItems();
-					}
-					else {
-						console.log("Thank you for shopping with us. Come back again soon!");
-					}
-				});
+				startOver();
 			}
 		});
+	});
+}
+
+// Asks the user if they would like to purchase another item and executes displayItems
+// if they confirm
+function startOver() {
+	inquirer.prompt([
+		{
+			name: "confirm",
+			type: "confirm",
+			message: "Would you like to order something else?"
+		}
+	]).then(function(answer) {
+		if (answer.confirm === true) {
+			displayItems();
+		}
+		else {
+			console.log("Thank you for shopping with us. Come back again soon!");
+		}
 	});
 }
 

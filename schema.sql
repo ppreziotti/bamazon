@@ -12,7 +12,7 @@ CREATE TABLE products (
 );
 
 ALTER TABLE products
-ADD COLUMN product_sales DECIMAL(10,2);
+ADD COLUMN product_sales DECIMAL(10,2) DEFAULT 0.00;
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Dell Latitude E5570 Laptop Computer", "Electronics", 1500.00, 10),
@@ -43,3 +43,8 @@ VALUES ("Electronics", 4500.00),
 ("Sports", 200.00),
 ("Grocery", 75.00),
 ("Books", 75.00);
+
+SELECT * FROM departments;
+
+UPDATE departments
+SET total_sales=0;

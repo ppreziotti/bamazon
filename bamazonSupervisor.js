@@ -36,6 +36,7 @@ function viewSales() {
 		if (err) throw err;
 		console.table(res);
 	});
+}
 
 // The supervisor is able to create a new department by inserting the department name 
 // and overhead costs into the departments table
@@ -56,12 +57,11 @@ function newDepartment() {
 			}
 		}
 	]).then(function(answers) {
-		connection.query("INSERT INTO departments SET ?",{department_name: answers.name, overhead_costs: answers.costs}, function(err, res) {
+		connection.query("INSERT INTO departments SET ?", {department_name: answers.name, overhead_costs: answers.costs}, function(err, res) {
 			if (err) throw err;
 			console.log("Department added succesfully!");
 		});
-	})
-
+	});
 }
 
 // Execute displayOptions to start program
