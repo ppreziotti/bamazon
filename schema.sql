@@ -6,7 +6,7 @@ CREATE TABLE products (
 	item_id INT AUTO_INCREMENT NOT NULL,
 	product_name VARCHAR(100) NOT NULL,
 	department_name VARCHAR(50) NOT NULL,
-	price DECIMAL(6,2) NOT NULL,
+	price DECIMAL(10,2) NOT NULL,
 	stock_quantity INT NOT NULL,
 	PRIMARY KEY (item_id)
 );
@@ -30,12 +30,9 @@ CREATE TABLE departments (
 	department_id INT AUTO_INCREMENT NOT NULL,
 	deparment_name VARCHAR(50) NOT NULL,
 	overhead_costs DECIMAL(10,2) NOT NULL,
-	total_sales DECIMAL(10,2),
+	total_sales DECIMAL(10,2) DEFAULT 0.00,
 	PRIMARY KEY (department_id)
 );
-
-ALTER TABLE departments
-ALTER total_sales SET DEFAULT 0.00;
 
 INSERT INTO departments (department_name, overhead_costs)
 VALUES ("Electronics", 4500.00),
@@ -43,8 +40,3 @@ VALUES ("Electronics", 4500.00),
 ("Sports", 200.00),
 ("Grocery", 75.00),
 ("Books", 75.00);
-
-SELECT * FROM departments;
-
-UPDATE departments
-SET total_sales=0;

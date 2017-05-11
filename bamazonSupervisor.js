@@ -35,6 +35,7 @@ function viewSales() {
 	connection.query("SELECT department_id, department_name, overhead_costs, total_sales, total_sales-overhead_costs AS total_profit FROM departments", function(err, res) {
 		if (err) throw err;
 		console.table(res);
+		startOver();
 	});
 }
 
@@ -60,8 +61,27 @@ function newDepartment() {
 		connection.query("INSERT INTO departments SET ?", {department_name: answers.name, overhead_costs: answers.costs}, function(err, res) {
 			if (err) throw err;
 			console.log("Department added succesfully!");
+			startOver();
 		});
 	});
+}
+
+// Give the supervisor the option of going back to the starting screen
+function startOver() {
+	inquirer.prompt([
+		{
+			name: "confirm",
+			type: "confirm",
+			message: "Do you need to do anything else today?"
+		}
+	]).then(function(answer) {
+		if (answer.confirm === true) {
+			displayOptions();
+		}
+		else {
+			console.log("Goodbye!");
+		}
+	})
 }
 
 // Execute displayOptions to start program

@@ -133,11 +133,23 @@ function addProduct() {
 		},
 		{
 			name: "price",
-			message: "Please enter the product price:"
+			message: "Please enter the product price:",
+			validate: function(value) {
+				if (isNaN(value) === false) {
+					return true;
+				}
+				return false;
+			}
 		},
 		{
 			name: "quantity",
-			message: "Please enter the quantity in stock:"
+			message: "Please enter the quantity in stock:",
+			validate: function(value) {
+				if (isNaN(value) === false) {
+					return true;
+				}
+				return false;
+			}
 		}
 	]).then(function(answers) {
 		connection.query("INSERT INTO products SET ?", {product_name: answers.name,
@@ -163,7 +175,7 @@ function startOver() {
 			displayOptions();
 		}
 		else {
-			console.log("Thank you. Come back again soon.");
+			console.log("Goodbye!");
 		}
 	});
 }
